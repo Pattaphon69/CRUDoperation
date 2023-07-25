@@ -1,0 +1,82 @@
+﻿@page "/persons"
+@using CreateCRUDOperation.Data
+@inject DataService dataService
+<NavLink class="nav-link" href="AddNewData">
+    <span class="btn btn-primary" aria-hidden="true">
+        Add New Data
+    </span>
+</NavLink>
+<h3>PersonList</h3>
+
+@if(PersonObject is null)
+{
+    <p><em>Loading...!</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    City
+                </th>
+                <th>
+                    Country
+                </th>
+                <th>
+                    Edit
+                </th>
+                <th>
+                    Delete
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var emp in PersonObject)
+            {
+                <tr>
+                    <th>
+                        @emp.Id
+                    </th>
+                    <th>
+                        @emp.Name
+                    </th>
+                    <th>
+                        @emp.City
+                    </th>
+                    <th>
+                        @emp.Country
+                    </th>
+                    <td>
+                        <a class="nav-link btn btn-primary" href="EditData/@emp.Id">
+                            <span class="oi oi-pencil"  aria-hidden="true"> Edit</span>
+                        </a>
+                    </td>
+
+                    <td>
+                        <a class="nav-link btn btn-danger" href="DeleteData/@emp.Id">
+                            <span class="oi oi-trash" aria-hidden="true"> Delete</span>
+                        </a>
+                    </td>
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<Person> PersonObject;
+
+    protected override async Task OnInitializedAsync()
+    {
+        PersonObject = await Task.Run(()=>dataService.GetAllPersons());
+    }
+
+}

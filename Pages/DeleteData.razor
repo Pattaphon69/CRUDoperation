@@ -1,0 +1,62 @@
+﻿@page "/DeleteData/{Id}"
+@using CreateCRUDOperation.Data
+@inject DataService dataService
+@inject NavigationManager NavigationManager
+
+<h3>Edit Data</h3>
+
+<hr />
+
+<form>
+    <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label for="Id" class="control-label"> Id</Label>
+                    <label> @obj.Id</label>
+                </div>
+                <div class="form-group">
+                    <label for="Name" class="control-label"> Name</Label>
+                    <label> @obj.Name</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="City" class="control-label"> City</Label>
+                    <label> @obj.City</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="Country" class="control-label"> Country</Label>
+                    <label> @obj.Country</label>
+                </div>
+            </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-groub">
+                <input type="button" class="btn btn-primary" @onclick="@DeletePerson" value="Delete"/>
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel"/>
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; }
+    Person obj = new Person();
+    protected override async Task OnInitializedAsync()
+    {
+        obj = await Task.Run(() => dataService.GetPersonById(Convert.ToInt32(Id)));
+    }
+    protected async void DeletePerson()
+    {
+        await dataService.DeletePerson(obj);
+        NavigationManager.NavigateTo("persons");
+    }
+    protected async void Cancel()
+    {
+        NavigationManager.NavigateTo("persons");
+    }
+
+}

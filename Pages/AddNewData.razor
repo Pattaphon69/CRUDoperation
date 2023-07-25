@@ -1,0 +1,53 @@
+﻿@page "/AddNewData"
+@using CreateCRUDOperation.Data
+@inject DataService dataService
+@inject NavigationManager NavigationManager
+
+<h3>Add New Data</h3>
+
+<hr />
+
+<form>
+    <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label for="Name" class="control-label"> Name</Label>
+                    <input form="Name" class="form-control" @bind="@obj.Name"></input>
+                </div>
+
+                <div class="form-group">
+                    <label for="City" class="control-label"> City</Label>
+                    <input form="City" class="form-control" @bind="@obj.City"></input>
+                </div>
+
+                <div class="form-group">
+                    <label for="Country" class="control-label"> Country</Label>
+                    <input form="Country" class="form-control" @bind="@obj.Country"></input>
+                </div>
+            </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-groub">
+                <input type="button" class="btn btn-primary" @onclick="@CreateNewData" value="Save Data"/>
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel"/>
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+
+    Person obj = new Person();
+
+    protected async void CreateNewData()
+    {
+        await dataService.AddnewPerson(obj);
+        NavigationManager.NavigateTo("persons");
+    }
+    protected async void Cancel()
+    {
+        NavigationManager.NavigateTo("persons");
+    }
+
+}
